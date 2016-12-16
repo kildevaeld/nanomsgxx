@@ -3,7 +3,7 @@ project(nnxx)
 
 # Global settings
 set(GLOBAL_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
-set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
+#set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/install)
 
 # Sets global output directory for single configuration (GCC)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${GLOBAL_OUTPUT_PATH})
