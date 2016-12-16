@@ -1,0 +1,38 @@
+
+include(ExternalProject)
+
+# Builds external third party projects.
+# The parent script needs to define the "GLOBAL_OUTPUT_PATH" variable,
+# which will be used as output directory for all *.lib, *.dll, *.a, *.so, *.pdb files.
+
+###############################################################################
+# HumbleLogging
+###############################################################################
+
+ExternalProject_Add(
+  nanomsg
+
+  GIT_REPOSITORY "https://github.com/nanomsg/nanomsg.git"
+  GIT_TAG "master"
+  
+  UPDATE_COMMAND ""
+  PATCH_COMMAND ""
+  
+  SOURCE_DIR "${CMAKE_SOURCE_DIR}/3rdparty/nanomsg"
+  CMAKE_ARGS --DNN_ENABLE_DOC=OFF -DNN_TESTS=OFF -DCMAKE_INSTALL_PREFIX=${GLOBAL_OUTPUT_PATH}/nanomsg
+  
+  TEST_COMMAND ""
+)
+
+ExternalProject_Add_Step(
+  nanomsg CopyToBin
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${GLOBAL_OUTPUT_PATH}/nanomsg/bin ${GLOBAL_OUTPUT_PATH}
+  COMMAND ${CMAKE_COMMAND} -E copy_directory ${GLOBAL_OUTPUT_PATH}/nanomsg/lib ${GLOBAL_OUTPUT_PATH}
+  DEPENDEES install
+)
+
+#set(nanomsg_INCLUDE_DIRS "${CMAKE_SOURCE_DIR}/3rdparty/nanomsg/include")
+set(nanomsg_INCLUDE_DIRS "${GLOBAL_OUTPUT_PATH}/nanomsg/include")
+
+set(nanomsg_LIBRARIES "${CMAKE_SHARED_LIBRARY_PREFIX}nanomsg${CMAKE_SHARED_LIBRARY_SUFFIX}")
+include_directories(${nanomsg_INCLUDE_DIRS})
