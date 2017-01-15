@@ -64,8 +64,21 @@ message(info ${nanomsg_LIBRARIES})
 
 include_directories(${GLOBAL_OUTPUT_PATH}/nanomsg/include)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
-add_library(nnxx ${SOURCES})
+include_directories(${GLOBAL_OUTPUT_PATH}/nanomsg/lib)
+
+
+if (NNXX_STATIC_LIB)
+    add_library (${PROJECT_NAME} STATIC ${SOURCES})
+else ()
+    add_library (${PROJECT_NAME} SHARED ${SOURCES})
+    add_definitions (-DNNXX_SHARED_LIB)
+    #set_target_properties (${PROJECT_NAME} PROPERTIES
+     #   SOVERSION "${NN_ABI_VERSION}")
+endif ()
+
+
 target_link_libraries(nnxx ${nanomsg_LIBS})
+
 add_dependencies(nnxx nanomsg)
 
 #set_target_properties(nnxx PROPERTIES PUBLIC_HEADER ${HEADERS})
